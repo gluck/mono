@@ -55,6 +55,8 @@ namespace Microsoft.Build.BuildEngine {
 		bool		keepDuplicates = true;
 		string		removeMetadata, keepMetadata;
 
+        public IDictionary EvaluatedMetadata { get { return evaluatedMetadata; } }
+
 		BuildItem ()
 		{
 		}

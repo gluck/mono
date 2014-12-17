@@ -534,14 +534,13 @@ namespace Microsoft.Build.BuildEngine {
 						LogWarning (filename, message);
 					});
 				filename = fullFileName + ".proj";
-				try {
-					tmp_project.Save (filename);
-					ParentEngine.RemoveLoadedProject (tmp_project);
-					DoLoad (new StreamReader (filename));
-				} finally {
-					if (Environment.GetEnvironmentVariable ("XBUILD_EMIT_SOLUTION") == null)
-						File.Delete (filename);
-				}
+                using (var stream = new MemoryStream())
+                {
+                    tmp_project.Save(new StreamWriter(stream));
+                    stream.Position = 0;
+                    ParentEngine.RemoveLoadedProject(tmp_project);
+                    DoLoad(new StreamReader(stream));
+                }
 			} else {
 				DoLoad (new StreamReader (filename));
 			}
@@ -1291,7 +1290,7 @@ namespace Microsoft.Build.BuildEngine {
 			}
 		}
 		
-		internal IDictionary <string, BuildItemGroup> EvaluatedItemsByName {
+		public IDictionary <string, BuildItemGroup> EvaluatedItemsByName {
 			get {
 				// FIXME: do we need to do this here?
 				if (needToReevaluate) {

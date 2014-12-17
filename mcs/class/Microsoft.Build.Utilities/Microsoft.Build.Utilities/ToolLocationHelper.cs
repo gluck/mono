@@ -59,10 +59,12 @@ namespace Microsoft.Build.Utilities
 
 #if NET_4_0
 			var windowsPath = Environment.GetFolderPath (Environment.SpecialFolder.Windows);
-			runningOnDotNet = !string.IsNullOrEmpty (windowsPath) && lib_mono_dir.StartsWith (windowsPath);
+#else
+            var windowsPath = Environment.GetEnvironmentVariable("windir");
 #endif
+			runningOnDotNet = !string.IsNullOrEmpty (windowsPath) && lib_mono_dir.StartsWith (windowsPath);
 
-			if (Environment.GetEnvironmentVariable ("TESTING_MONO") != null) {
+            if (Environment.GetEnvironmentVariable ("TESTING_MONO") != null) {
 				mono_dir = new string [] {
 					Path.Combine (lib_mono_dir, "net_1_0"),
 					Path.Combine (lib_mono_dir, "net_2_0"),
@@ -193,17 +195,17 @@ namespace Microsoft.Build.Utilities
 			if (!string.IsNullOrEmpty (targetFrameworkVersion)) {
 				path = Path.Combine (path, targetFrameworkVersion);
 				if (!string.IsNullOrEmpty (targetFrameworkProfile))
-					path = Path.Combine (path, "Profile", targetFrameworkProfile);
+					path = Path.Combine (path, Path.Combine("Profile", targetFrameworkProfile));
 			}
 			if (!Directory.Exists (path))
 				return null;
-			var flist = Path.Combine (path, "RedistList", "FrameworkList.xml");
+			var flist = Path.Combine (path, Path.Combine("RedistList", "FrameworkList.xml"));
 			if (!File.Exists (flist))
 				return null;
 			var xml = XmlReader.Create (flist);
 			xml.MoveToContent ();
 			var targetFxDir = xml.GetAttribute ("TargetFrameworkDirectory");
-			targetFxDir = targetFxDir != null ? Path.GetFullPath (Path.Combine (path, "dummy", targetFxDir.Replace ('\\', Path.DirectorySeparatorChar))) : null;
+			targetFxDir = targetFxDir != null ? Path.GetFullPath (Path.Combine (path, Path.Combine("dummy", targetFxDir.Replace ('\\', Path.DirectorySeparatorChar)))) : null;
 			if (Directory.Exists (targetFxDir))
 				return targetFxDir;
 			// I'm not sure if this is completely valid assumption...

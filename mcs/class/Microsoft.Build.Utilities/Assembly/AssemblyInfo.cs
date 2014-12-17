@@ -54,8 +54,6 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible (false)]
 [assembly: CLSCompliant (true)]
-[assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile("../msfinal.pub")]
 
 [assembly: AssemblyFileVersion (XBuildConsts.FileVersion)]
 

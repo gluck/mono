@@ -1,4 +1,3 @@
-//
 // Import.cs: Represents a single Import element in an MSBuild project.
 //
 // Author:
