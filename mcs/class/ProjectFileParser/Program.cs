@@ -15,6 +15,20 @@ namespace ProjectFileParser
     {
         static void Main(string[] args)
         {
+            try
+            {
+                Parse(args[0]);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("Error during project file parsing: {0}", e.Message);
+                Console.Error.WriteLine(e.StackTrace);
+                Environment.ExitCode = -1;
+            }
+        }
+
+        static void Parse(String file)
+        {
             var solution = new Project();
             var obj = JObject.Parse(Console.In.ReadToEnd());
             foreach (var prop in obj)
@@ -22,14 +36,14 @@ namespace ProjectFileParser
                 solution.GlobalProperties[prop.Key] = new BuildProperty(prop.Key, prop.Value.ToString());
             }
 
-            solution.Load(args[0]);
+            solution.Load(file);
             var result = ToJson(solution);
-            if (Path.GetExtension(args[0]) == ".sln")
+            if (Path.GetExtension(file) == ".sln")
             {
                 var jSolution = result;
                 result = new JObject();
                 result["Solution"] = jSolution;
-                foreach (var proj in solution.EvaluatedItemsByName.Where(entry => entry.Key.StartsWith("BuildLevel")).Select(entry => entry.Value.Cast<BuildItem>().First()))
+                foreach (var proj in solution.EvaluatedItemsByName.Where(entry => entry.Key.StartsWith("BuildLevel")).SelectMany(entry => entry.Value.Cast<BuildItem>()))
                 {
                     var project = solution.ParentEngine.CreateNewProject();
                     foreach (var meta in proj.EvaluatedMetadata.Cast<DictionaryEntry>())
@@ -59,7 +73,13 @@ namespace ProjectFileParser
                 jProject[entry.Key] = items;
                 foreach (var item in entry.Value.Cast<BuildItem>())
                 {
-                    items.Add(item.FinalItemSpec);
+                    var it = new JObject();
+                    it["Include"] = item.FinalItemSpec;
+                    foreach (var meta in item.EvaluatedMetadata.Cast<DictionaryEntry>())
+                    {
+                        it[(string)meta.Key] = (string)meta.Value;
+                    }
+                    items.Add(it);
                 }
             }
             return jProject;

@@ -71,7 +71,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
@@ -80,7 +80,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>
-      $(SolutionDir)\packages\ILRepack.1.25.0\tools\ILRepack.exe /log /wildcards "/out:ProjectFileParser_Full.exe" "$(TargetPath)" Microsoft.Build.*.dll
+      $(SolutionDir)\packages\ILRepack.1.25.0\tools\ILRepack.exe /log /wildcards "/out:ProjectFileParser_Full.exe" "$(TargetPath)" Microsoft.Build.*.dll Newtonsoft.Json.dll
     </PostBuildEvent>
   </PropertyGroup>
 </Project>
