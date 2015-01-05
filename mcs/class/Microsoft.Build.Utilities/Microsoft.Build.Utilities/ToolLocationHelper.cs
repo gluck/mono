@@ -169,18 +169,20 @@ namespace Microsoft.Build.Utilities
 		}
 
 		[MonoTODO]
-		#if XBUILD_12
-		public
-		#endif
-		static string GetPathToStandardLibraries (string targetFrameworkIdentifier,
+		public static string GetPathToStandardLibraries (string targetFrameworkIdentifier,
 		                                          string targetFrameworkVersion,
 		                                          string targetFrameworkProfile,
 		                                          string platformTarget)
 		{
+            if (runningOnDotNet)
+            {
+                var refDir = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86) ?? Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                refDir = Path.Combine(refDir, "Reference Assemblies", "Microsoft", "Framework");
+                return GetPathToStandardLibrariesWith(refDir, targetFrameworkIdentifier, targetFrameworkVersion, targetFrameworkProfile);
+            }
 			// FIXME: support platformTarget
-			if (platformTarget != null)
-				throw new NotImplementedException ("platformTarget support is not implemented");
-			
+			//if (platformTarget != null)
+			//	throw new NotImplementedException ("platformTarget support is not implemented");
 			var ext = Environment.GetEnvironmentVariable ("XBUILD_FRAMEWORK_FOLDERS_PATH");
 			var ret = ext != null ? GetPathToStandardLibrariesWith (ext, targetFrameworkIdentifier, targetFrameworkVersion, targetFrameworkProfile) : null;
 			return ret ?? GetPathToStandardLibrariesWith (Path.GetFullPath (Path.Combine (lib_mono_dir, "xbuild-frameworks")), targetFrameworkIdentifier, targetFrameworkVersion, targetFrameworkProfile);

@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using Mono.XBuild.Utilities;
+using Microsoft.Build.Utilities;
 
 namespace Microsoft.Build.BuildEngine {
 
@@ -403,7 +404,7 @@ namespace Microsoft.Build.BuildEngine {
 			case "system.version":
 				return typeof (Version);
 			case "microsoft.build.utilities.toollocationhelper":
-				throw new NotImplementedException (typeName);
+				return typeof (ToolLocationHelper);
 			case "msbuild":
 				return typeof (PredefinedPropertyFunctions);
 			case "system.environment":

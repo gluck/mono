@@ -533,10 +533,10 @@ namespace Microsoft.Build.BuildEngine {
 				sln_parser.ParseSolution (fullFileName, tmp_project, delegate (int errorNumber, string message) {
 						LogWarning (filename, message);
 					});
-				filename = fullFileName + ".proj";
                 using (var stream = new MemoryStream())
                 {
                     tmp_project.Save(new StreamWriter(stream));
+                    tmp_project.Save(fullFileName + ".proj");
                     stream.Position = 0;
                     ParentEngine.RemoveLoadedProject(tmp_project);
                     DoLoad(new StreamReader(stream));

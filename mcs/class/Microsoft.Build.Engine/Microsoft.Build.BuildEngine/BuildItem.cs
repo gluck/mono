@@ -52,8 +52,7 @@ namespace Microsoft.Build.BuildEngine {
 		IDictionary	evaluatedMetadata;
 		IDictionary	unevaluatedMetadata;
 		bool		isDynamic;
-		bool		keepDuplicates = true;
-		string		removeMetadata, keepMetadata;
+        string      keepDuplicates, removeMetadata, keepMetadata;
 
         public IDictionary EvaluatedMetadata { get { return evaluatedMetadata; } }
 
@@ -125,7 +124,7 @@ namespace Microsoft.Build.BuildEngine {
 					Remove = attr.Value;
 					break;
 				case "KeepDuplicates":
-					KeepDuplicates = bool.Parse (attr.Value);
+					keepDuplicates = attr.Value;
 					break;
 				case "RemoveMetadata":
 					removeMetadata = attr.Value;
@@ -467,7 +466,15 @@ namespace Microsoft.Build.BuildEngine {
 
 		void AddEvaluatedItem (Project project, bool evaluatedTo, ITaskItem taskitem)
 		{
-			if (IsDynamic && evaluatedTo && !KeepDuplicates && ContainsItem (project, taskitem))
+            bool keepDup = true;
+            if (!string.IsNullOrEmpty(keepDuplicates)) {
+                					Expression exp = new Expression ();
+					exp.Parse (keepDuplicates, ParseOptions.AllowItemsNoMetadataAndSplit);
+                    keepDup = (bool)exp.ConvertTo(project, typeof(bool),
+							ExpressionOptions.ExpandItemRefs);
+	
+            }
+            if (IsDynamic && evaluatedTo && !keepDup && ContainsItem(project, taskitem))
 				return;
 
 			BuildItemGroup big;			
@@ -672,11 +679,6 @@ namespace Microsoft.Build.BuildEngine {
 		internal string Remove {
 			get;
 			private set;
-		}
-
-		internal bool KeepDuplicates {
-			get { return keepDuplicates; }
-			private set { keepDuplicates = value; }
 		}
 
 		public bool IsImported {

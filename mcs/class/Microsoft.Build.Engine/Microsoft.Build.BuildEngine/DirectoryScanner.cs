@@ -96,22 +96,25 @@ namespace Microsoft.Build.BuildEngine {
 					return;
 
 				int offset = 0;
-				string full_path;
-				if (Path.IsPathRooted (name)) {
-					// The path may start with a root indicator, but at the same time can
-					// contain relative paths inbetween
-					full_path = Path.GetFullPath (name);
-					baseDirectory = new DirectoryInfo (Path.GetPathRoot (name));
-					if (IsRunningOnWindows)
-						// skip the "drive:"
-						offset = 1;
-				} else {
-					full_path = Path.GetFullPath (Path.Combine (Environment.CurrentDirectory, name));
-				}
+                int wildcard_offset = name.IndexOf("**");
+                if (wildcard_offset >= 0) {
+                    var recPrefix = name.Substring(0, wildcard_offset);
+                    if (Path.IsPathRooted(recPrefix)) {
+                        wildcard_offset = Path.GetFullPath(recPrefix).Length;
+                    } else {
+                        wildcard_offset = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, recPrefix)).Length;
+                    }
+                }
+                if (Path.IsPathRooted(name)) {
+                    // The path may start with a root indicator, but at the same time can
+                    // contain relative paths inbetween
+                    baseDirectory = new DirectoryInfo (Path.GetPathRoot (name));
+                    if (IsRunningOnWindows)
+                        // skip the "drive:"
+                        offset = 1;
+                }
+                fileInfo = ParseIncludeExclude (separatedPath, offset, baseDirectory);
 
-				fileInfo = ParseIncludeExclude (separatedPath, offset, baseDirectory);
-
-				int wildcard_offset = full_path.IndexOf ("**");
 				foreach (FileInfo fi in fileInfo) {
 					string itemName = fi.FullName;
 					if (!Path.IsPathRooted (name) && itemName.Length > baseDirectory.FullName.Length && itemName.StartsWith (baseDirectory.FullName))

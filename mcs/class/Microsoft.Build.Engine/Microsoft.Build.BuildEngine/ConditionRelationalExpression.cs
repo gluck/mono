@@ -148,6 +148,8 @@ namespace Microsoft.Build.BuildEngine {
 				return comparer.Compare (l, r) == 0;
 			case RelationOperator.NotEqual:
 				return comparer.Compare (l, r) != 0;
+			case RelationOperator.Greater:
+				return comparer.Compare (l, r) > 0;
 			default:
 				throw new NotSupportedException (String.Format ("Relational operator {0} is not supported.", op));
 			}

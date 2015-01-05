@@ -29,8 +29,8 @@ namespace ProjectFileParser
 
         static void Parse(String file)
         {
-            var solution = new Project();
             var obj = JObject.Parse(Console.In.ReadToEnd());
+            var solution = new Project();
             foreach (var prop in obj)
             {
                 solution.GlobalProperties[prop.Key] = new BuildProperty(prop.Key, prop.Value.ToString());
