@@ -11,7 +11,7 @@ using System.Text;
 
 namespace ProjectFileParser
 {
-    class Program
+    class Program__
     {
         static void Main(string[] args)
         {

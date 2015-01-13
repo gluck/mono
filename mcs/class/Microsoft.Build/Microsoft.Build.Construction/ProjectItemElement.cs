@@ -130,12 +130,6 @@ namespace Microsoft.Build.Construction
                                 break;
                         }
                 }
-                internal override void LoadValue (XmlReader reader)
-                {
-                        if (string.IsNullOrWhiteSpace (Include) && string.IsNullOrEmpty (Remove))
-                                throw new InvalidProjectFileException (Location, null, string.Format ("Both Include and Remove attribute are null or empty on '{0}' item", ItemType));
-                        base.LoadValue (reader);
-                }
                 internal override ProjectElement LoadChildElement (XmlReader reader)
                 {
                         var metadata = ContainingProject.CreateMetadataElement (reader.LocalName);

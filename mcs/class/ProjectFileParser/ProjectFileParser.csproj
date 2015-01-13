@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ProjectFileParser</RootNamespace>
     <AssemblyName>ProjectFileParser</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,9 +32,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ProjectFileParser.Program</StartupObject>
+    <StartupObject>ProjectFileParser.Program__</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -57,17 +59,23 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Build.Engine\Microsoft.Build.Engine-net_3_5.csproj">
-      <Project>{9dea0c0a-bf6d-4c05-b3c5-1429f70a6ff5}</Project>
-      <Name>Microsoft.Build.Engine-net_3_5</Name>
+    <!--
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+	-->
+    <ProjectReference Include="..\Microsoft.Build.Engine\Microsoft.Build.Engine-net_4_5.csproj">
+      <Project>{54dfc5a7-7c1d-4ba5-a0f7-f0b312e1e076}</Project>
+      <Name>Microsoft.Build.Engine-net_4_5</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Build.Framework\Microsoft.Build.Framework-net_3_5.csproj">
-      <Project>{88fc8c2c-9157-41eb-a47c-981b2205ed7e}</Project>
-      <Name>Microsoft.Build.Framework-net_3_5</Name>
+    <ProjectReference Include="..\Microsoft.Build.Framework\Microsoft.Build.Framework-net_4_5.csproj">
+      <Project>{da3b9fee-8fbd-4587-b760-65420765256a}</Project>
+      <Name>Microsoft.Build.Framework-net_4_5</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Build.Utilities\Microsoft.Build.Utilities-net_3_5.csproj">
-      <Project>{c3f8a358-9da1-423c-8466-58ab30893eb0}</Project>
-      <Name>Microsoft.Build.Utilities-net_3_5</Name>
+    <ProjectReference Include="..\Microsoft.Build.Utilities\Microsoft.Build.Utilities-net_4_5.csproj">
+      <Project>{6e1c7bde-7b9e-47b0-a7b2-1561822fe922}</Project>
+      <Name>Microsoft.Build.Utilities-net_4_5</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

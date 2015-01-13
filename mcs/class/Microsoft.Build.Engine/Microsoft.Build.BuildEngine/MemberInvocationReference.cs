@@ -41,7 +41,7 @@ namespace Microsoft.Build.BuildEngine
 		Type type;
 		readonly string name;
 
-		static readonly char[] ArgumentTrimChars = new char[] { '\"', '\'', '`' };
+		static readonly char[] ArgumentTrimChars = new char[] { '\'' };
 		static readonly object ConversionFailed = new object ();
 
 		public MemberInvocationReference (Type type, string name)
@@ -128,10 +128,9 @@ namespace Microsoft.Build.BuildEngine
 				if (string.Equals (arg, "null", StringComparison.OrdinalIgnoreCase)) {
 					arg = null;
 				} else {
+					arg = arg.Trim (ArgumentTrimChars);
 					arg = Expression.ParseAs<string> (arg, ParseOptions.None,
 						project, options);
-
-					arg = arg.Trim (ArgumentTrimChars);
 				}
 
 				Arguments [i] = arg;

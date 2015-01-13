@@ -74,12 +74,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.XML" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Build.Framework\Microsoft.Build.Framework-net_3_5.csproj">
-      <Project>{88fc8c2c-9157-41eb-a47c-981b2205ed7e}</Project>
-      <Name>Microsoft.Build.Framework-net_3_5</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

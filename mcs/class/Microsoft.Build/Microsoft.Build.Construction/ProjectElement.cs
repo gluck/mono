@@ -80,6 +80,7 @@ namespace Microsoft.Build.Construction
                 {
                         switch (name) {
                         case "xmlns":
+                        case "TreatAsLocalProperty":
                                 break;
                         case "Label":
                                 Label = value;
