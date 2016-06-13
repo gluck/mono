@@ -30,23 +30,45 @@ using System;
 using System.Collections;
 using System.IO;
 using Mono.Cecil;
+using System.Collections.Generic;
 
 namespace Mono.Linker {
 
-	public class AssemblyResolver : BaseAssemblyResolver {
+    public class AssemblyResolver : DefaultAssemblyResolver
+    {
+        public virtual IEnumerable<AssemblyDefinition> Assemblies
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
+        public virtual void CacheAssembly (AssemblyDefinition assembly)
+        {
+            throw new NotImplementedException();
+        }
+    }
+	public class AssemblyResolverImpl : AssemblyResolver
+    {
 		IDictionary _assemblies;
 
-		public IDictionary AssemblyCache {
-			get { return _assemblies; }
+		public override IEnumerable<AssemblyDefinition> Assemblies
+        {
+			get
+            {
+                AssemblyDefinition [] asms = new AssemblyDefinition [_assemblies.Count];
+                _assemblies.Values.CopyTo (asms, 0);
+                return asms;
+            }
 		}
 
-		public AssemblyResolver ()
+		public AssemblyResolverImpl()
 			: this (new Hashtable ())
 		{
 		}
 
-		public AssemblyResolver (IDictionary assembly_cache)
+		public AssemblyResolverImpl(IDictionary assembly_cache)
 		{
 			_assemblies = assembly_cache;
 		}
@@ -62,7 +84,7 @@ namespace Mono.Linker {
 			return asm;
 		}
 
-		public void CacheAssembly (AssemblyDefinition assembly)
+		public override void CacheAssembly (AssemblyDefinition assembly)
 		{
 			_assemblies [assembly.Name.Name] = assembly;
 			base.AddSearchDirectory (Path.GetDirectoryName (assembly.MainModule.FullyQualifiedName));

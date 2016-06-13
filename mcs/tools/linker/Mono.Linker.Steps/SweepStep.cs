@@ -31,6 +31,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Mono.Cecil;
 using Mono.Collections.Generic;
+using System;
 
 namespace Mono.Linker.Steps {
 
@@ -73,9 +74,12 @@ namespace Mono.Linker.Steps {
 					types.Add (type);
 					continue;
 				}
-
-				if (type.Name == "<Module>")
+                else if (type.Name == "<Module>")
 					types.Add (type);
+                else
+                {
+                    Console.WriteLine($"Removing {type}, yeepee");
+                }
 			}
 
 			assembly.MainModule.Types.Clear ();

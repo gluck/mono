@@ -32,6 +32,7 @@ using System.IO;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using System.Linq;
 
 namespace Mono.Linker {
 
@@ -236,10 +237,7 @@ namespace Mono.Linker {
 
 		public AssemblyDefinition [] GetAssemblies ()
 		{
-			IDictionary cache = _resolver.AssemblyCache;
-			AssemblyDefinition [] asms = new AssemblyDefinition [cache.Count];
-			cache.Values.CopyTo (asms, 0);
-			return asms;
+			return _resolver.Assemblies.ToArray();
 		}
 
 		public void SetParameter (string key, string value)

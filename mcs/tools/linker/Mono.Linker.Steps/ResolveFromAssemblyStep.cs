@@ -58,7 +58,7 @@ namespace Mono.Linker.Steps {
 				ProcessLibrary (Context, assembly);
 				break;
 			default:
-				ProcessExecutable (assembly);
+				ProcessExecutable (Context, assembly);
 				break;
 			}
 		}
@@ -87,7 +87,7 @@ namespace Mono.Linker.Steps {
 			context.Annotations.Pop ();
 		}
 
-		static void MarkType (LinkContext context, TypeDefinition type)
+		public static void MarkType (LinkContext context, TypeDefinition type)
 		{
 			context.Annotations.Mark (type);
 
@@ -104,16 +104,16 @@ namespace Mono.Linker.Steps {
 			context.Annotations.Pop ();
 		}
 
-		void ProcessExecutable (AssemblyDefinition assembly)
+		public static void ProcessExecutable (LinkContext context, AssemblyDefinition assembly)
 		{
-			SetAction (Context, assembly, AssemblyAction.Link);
+			SetAction (context, assembly, AssemblyAction.Link);
 
-			Annotations.Push (assembly);
+			context.Annotations.Push (assembly);
 
-			Annotations.Mark (assembly.EntryPoint.DeclaringType);
-			MarkMethod (Context, assembly.EntryPoint, MethodAction.Parse);
+			context.Annotations.Mark (assembly.EntryPoint.DeclaringType);
+			MarkMethod (context, assembly.EntryPoint, MethodAction.Parse);
 
-			Annotations.Pop ();
+			context.Annotations.Pop ();
 		}
 
 		static void MarkFields (LinkContext context, ICollection fields)
@@ -128,7 +128,7 @@ namespace Mono.Linker.Steps {
 				MarkMethod (context, method, MethodAction.ForceParse);
 		}
 
-		static void MarkMethod (LinkContext context, MethodDefinition method, MethodAction action)
+		public static void MarkMethod (LinkContext context, MethodDefinition method, MethodAction action)
 		{
 			context.Annotations.Mark (method);
 			context.Annotations.SetAction (method, action);

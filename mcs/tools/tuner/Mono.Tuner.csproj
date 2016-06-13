@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,6 +10,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mono.Tuner</RootNamespace>
     <AssemblyName>Mono.Tuner</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -34,7 +36,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mono.Tuner\AdjustVisibility.cs" />
+    <Compile Include="Mono.Tuner\ApplyPreserveAttributeBase.cs" />
     <Compile Include="Mono.Tuner\CheckVisibility.cs" />
+    <Compile Include="Mono.Tuner\Dispatcher.cs" />
     <Compile Include="Mono.Tuner\PrintStatus.cs" />
     <Compile Include="Mono.Tuner\RemoveSerialization.cs" />
     <Compile Include="Mono.Tuner\TunerAnnotations.cs" />
@@ -56,16 +60,13 @@
   </Target>
   -->
   <ItemGroup>
-    <None Include="Makefile" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\cecil\Mono.Cecil.csproj">
+      <Project>{d68133bd-1e63-496e-9ede-4fbdbf77b486}</Project>
+      <Name>Mono.Cecil</Name>
+    </ProjectReference>
     <ProjectReference Include="..\linker\Mono.Linker.csproj">
       <Project>{DD28E2B1-057B-4B4D-A04D-B2EBD9E76E46}</Project>
       <Name>Mono.Linker</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\external\cecil\Mono.Cecil.csproj">
-      <Project>{D68133BD-1E63-496E-9EDE-4FBDBF77B486}</Project>
-      <Name>Mono.Cecil</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

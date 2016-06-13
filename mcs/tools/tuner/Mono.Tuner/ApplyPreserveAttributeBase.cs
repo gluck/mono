@@ -27,7 +27,7 @@ namespace Mono.Tuner {
 
 		public override bool IsActiveFor (AssemblyDefinition assembly)
 		{
-			return !Profile.IsSdkAssembly (assembly) && Annotations.GetAction (assembly) == AssemblyAction.Link;
+			return /*!Profile.IsSdkAssembly (assembly) && */Annotations.GetAction (assembly) == AssemblyAction.Link;
 		}
 
 		public override void ProcessType (TypeDefinition type)

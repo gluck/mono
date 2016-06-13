@@ -313,14 +313,15 @@ namespace Mono.Linker {
 			if (writer == null)
 				return;
 
-			writer.WriteEndElement ();
-			writer.WriteEndDocument ();
-			writer.Flush ();
-			writer.Close ();
-			zipStream.Close ();
-
-			writer.Dispose ();
-			zipStream.Dispose ();
+            using (zipStream)
+            using (writer)
+            {
+                writer.WriteEndElement();
+                writer.WriteEndDocument ();
+                writer.Flush ();
+                writer.Close ();
+                zipStream.Close ();
+            }
 			writer = null;
 			zipStream = null;
 			dependency_stack = null;
