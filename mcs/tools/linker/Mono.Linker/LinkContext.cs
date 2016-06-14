@@ -202,37 +202,7 @@ namespace Mono.Linker {
 
 		void SetAction (AssemblyDefinition assembly)
 		{
-			AssemblyAction action = AssemblyAction.Link;
-
-			AssemblyNameDefinition name = assembly.Name;
-
-			if (_actions.Contains (name.Name))
-				action = (AssemblyAction) _actions [name.Name];
-			else if (IsCore (name))
-				action = _coreAction;
-
-			_annotations.SetAction (assembly, action);
-		}
-
-		static bool IsCore (AssemblyNameReference name)
-		{
-			switch (name.Name) {
-			case "mscorlib":
-			case "Accessibility":
-			case "Mono.Security":
-				// WPF
-			case "PresentationFramework":
-			case "PresentationCore":
-			case "WindowsBase":
-			case "UIAutomationProvider":
-			case "UIAutomationTypes":
-			case "PresentationUI":
-			case "ReachFramework":
-				return true;
-			default:
-				return name.Name.StartsWith ("System")
-					|| name.Name.StartsWith ("Microsoft");
-			}
+			_annotations.SetAction (assembly, AssemblyAction.Skip);
 		}
 
 		public AssemblyDefinition [] GetAssemblies ()
