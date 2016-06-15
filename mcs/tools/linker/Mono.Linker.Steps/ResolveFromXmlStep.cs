@@ -142,16 +142,21 @@ namespace Mono.Linker.Steps {
 			return new Regex (pattern.Replace(".", @"\.").Replace("*", "(.*)"));
 		}
 
-		void MatchType (TypeDefinition type, Regex regex, XPathNavigator nav)
+		bool MatchType (TypeDefinition type, Regex regex, XPathNavigator nav)
 		{
-			if (regex.Match (type.FullName).Success)
-				ProcessType (type, nav);
+			bool match = false;
+			if (type.HasNestedTypes)
+            {
+                foreach (var nt in type.NestedTypes)
+                    match |= MatchType (nt, regex, nav);
+            }
 
-			if (!type.HasNestedTypes)
-				return;
+            match |= regex.Match (type.FullName).Success;
 
-			foreach (var nt in type.NestedTypes)
-				MatchType (nt, regex, nav);
+            if (match)
+                ProcessType (type, nav);
+
+            return match;
 		}
 
 		void ProcessTypePattern (string fullname, AssemblyDefinition assembly, XPathNavigator nav)

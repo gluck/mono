@@ -139,6 +139,7 @@ namespace Mono.Linker {
 
 		public void SetPreserve (TypeDefinition type, TypePreserve preserve)
 		{
+            Console.WriteLine($"Preserve {type.FullName} with {preserve}");
 			preserved_types [type] = preserve;
 		}
 

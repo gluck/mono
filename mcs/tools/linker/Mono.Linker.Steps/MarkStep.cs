@@ -379,9 +379,10 @@ namespace Mono.Linker.Steps {
 			}
 
 			var td = type.Resolve ();
-			if (td != null)
-				type.Scope = td.Scope;
-			MarkType (type);
+            // wow boy, don't change me scope
+            //if (td != null)
+            //    type.Scope = td.Scope;
+            MarkType (type);
 		}
 
 		protected bool CheckProcessed (IMetadataTokenProvider provider)
@@ -856,6 +857,8 @@ namespace Mono.Linker.Steps {
 
 			if (!Annotations.IsPreserved (type))
 				return;
+
+            Console.WriteLine($"Type {type.FullName} is preserved with {Annotations.GetPreserve(type)}");
 
 			switch (Annotations.GetPreserve (type)) {
 			case TypePreserve.All:
